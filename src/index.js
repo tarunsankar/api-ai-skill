@@ -63,6 +63,8 @@ restService.post('/api', function(req, res) {
     
     if(actionName == 'wmr-news'){
     	apiObj.handleWMRResponse(req, res);
+    }else if(actionName == 'factsheet'){
+    	apiObj.handleFactSheetResponse(req, res);
     }else{
     	apiObj.unknownActionResponse(req, res);
     }
@@ -90,6 +92,30 @@ API.prototype.handleWMRResponse = function(req, res){
 	        source: header
 	    });
 	});
+}
+
+
+API.prototype.handleFactSheetResponse = function(req, res){
+	
+	const fundName = "financials";
+	
+	etf.postFactSheetRequest(function(data){
+		appLogger.info('Fact Sheet data',data);
+		let speech,header;
+		if(!data || data.status == "ERROR"){
+			speech = data.statusMsg;
+		    header = "Fact Sheet - Error!";
+		}else{
+			speech = "The document has been emailed to you. Please check your inbox";
+			header = "Fact Sheet!";
+		}
+
+		return res.json({
+	        speech: speech,
+	        displayText: speech,
+	        source: header
+	    });
+	},fundName);
 }
 
 
