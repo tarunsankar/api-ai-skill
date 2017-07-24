@@ -42,7 +42,7 @@ const accessLogStream = rfs('access.log', {
 });
 //End of Log file configurations for Morgan
 
-appLogger.info('index.js Initialized');
+console.log('index.js Initialized');
 
 const restService = express();
 
@@ -142,17 +142,17 @@ API.prototype.handleETFFundResponse = function(req, res){
 	const fundName = requestParams.fundName ? requestParams.fundName : undefined;
 	const fundAttribute = requestParams.fundAttribute ? requestParams.fundAttribute : undefined;
 	
-	console.log("fundName ",fundName);
-	console.log("fundAttribute ",fundAttribute);
+	appLogger.info("fundName ",fundName);
+	appLogger.info("fundAttribute ",fundAttribute);
 	
 	let speech,header;
 	
 	 if(fundAttribute){
-         console.log("Fund Attribute Info ",etffunds[etfFund][fundDetailAttr]);
-         speech = etffunds[etfFund][fundDetailAttr];
+         appLogger.info("Fund Attribute Info ",etffunds[etfFund][fundDetailAttr]);
+         speech = etf.etffunds[etfFund][fundDetailAttr];
          header = "ETF - Fund Attribute";
      }else{
-        const fundInfo = etffunds[etfFund].fundInfo;
+        const fundInfo = etf.etffunds[etfFund].fundInfo;
         speech = fundInfo + ". Do you want to hear more details about "+etfFund+" fund?"    
         header = "ETF - Fund Info";
      }	
