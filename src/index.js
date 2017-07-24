@@ -148,11 +148,11 @@ API.prototype.handleETFFundResponse = function(req, res){
 	let speech,header;
 	
 	 if(fundAttribute){
-         appLogger.info("Fund Attribute Info ",etffunds[etfFund][fundDetailAttr]);
-         speech = etf.etffunds[etfFund][fundDetailAttr];
+         appLogger.info("Fund Attribute Info ",etffunds[fundName][fundDetailAttr]);
+         speech = etf.etffunds[fundName][fundDetailAttr];
          header = "ETF - Fund Attribute";
      }else{
-        const fundInfo = etf.etffunds[etfFund].fundInfo;
+        const fundInfo = etf.etffunds[fundName].fundInfo;
         speech = fundInfo + ". Do you want to hear more details about "+fundName+" fund?"    
         header = "ETF - Fund Info";
      }	
