@@ -42,7 +42,7 @@ const accessLogStream = rfs('access.log', {
 });
 //End of Log file configurations for Morgan
 
-console.log('index.js Initialized');
+appLogger.info('index.js Initialized');
 
 const restService = express();
 
@@ -101,7 +101,7 @@ API.prototype.handleWMRResponse = function(req, res){
 API.prototype.handleFactSheetResponse = function(req, res){
 	
 	const requestParams = req.body.result && req.body.result.parameters ? req.body.result.parameters : {};
-	const fundName = requestParams.fundName ? requestParams.fundName : undefined;
+	const fundName = requestParams.fundName ? requestParams.fundName.toLowerCase() : undefined;
 	
 	appLogger.info("fundName ",fundName)
 	
@@ -139,8 +139,8 @@ API.prototype.handleFactSheetResponse = function(req, res){
 API.prototype.handleETFFundResponse = function(req, res){
 	
 	const requestParams = req.body.result && req.body.result.parameters ? req.body.result.parameters : {};
-	const fundName = requestParams.fundName ? requestParams.fundName : undefined;
-	const fundAttribute = requestParams.fundAttribute ? requestParams.fundAttribute : undefined;
+	const fundName = requestParams.fundName ? requestParams.fundName.toLowerCase() : undefined;
+	const fundAttribute = requestParams.fundAttribute ? requestParams.fundAttribute.toLowerCase() : undefined;
 	
 	appLogger.info("fundName ",fundName);
 	appLogger.info("fundAttribute ",fundAttribute);
@@ -153,7 +153,7 @@ API.prototype.handleETFFundResponse = function(req, res){
          header = "ETF - Fund Attribute";
      }else{
         const fundInfo = etf.etffunds[etfFund].fundInfo;
-        speech = fundInfo + ". Do you want to hear more details about "+etfFund+" fund?"    
+        speech = fundInfo + ". Do you want to hear more details about "+fundName+" fund?"    
         header = "ETF - Fund Info";
      }	
 	
@@ -176,5 +176,5 @@ API.prototype.unknownActionResponse = function(req, res){
 
 
 restService.listen((process.env.PORT || 3000), function() {
-    console.log("Server up and listening");
+    appLogger.info("Server up and listening");
 });

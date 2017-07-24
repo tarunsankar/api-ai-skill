@@ -230,7 +230,7 @@ ETF.prototype.updateFundData = function(etfObj,data){
 		}
 	});
 	
-	console.log("etfFund ",etfFund);
+	appLogger.info("etfFund ",etfFund);
 	
 	if(etfFund){
 		// get fund data
