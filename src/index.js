@@ -16,6 +16,7 @@ const etf = require('./etf.js').ETF;
 const cfg = require('./config.js');
 const API = function () {};
 const apiObj = new API();
+etf.init(etf);
 
 //Application level logging.
 const logDirectory = path.join(__dirname, 'log');
@@ -65,6 +66,8 @@ restService.post('/api', function(req, res) {
     	apiObj.handleWMRResponse(req, res);
     }else if(actionName == 'factsheet'){
     	apiObj.handleFactSheetResponse(req, res);
+    }else if(actionName == 'etffund'){
+    	apiObj.handleETFFundResponse(req, res);
     }else{
     	apiObj.unknownActionResponse(req, res);
     }
@@ -97,7 +100,20 @@ API.prototype.handleWMRResponse = function(req, res){
 
 API.prototype.handleFactSheetResponse = function(req, res){
 	
-	const fundName = "financials";
+	const requestParams = req.body.result && req.body.result.parameters ? req.body.result.parameters : {};
+	const fundName = requestParams.fundName ? requestParams.fundName : undefined;
+	
+	appLogger.info("fundName ",fundName)
+	
+	if(!fundName){
+		const speech = "Can you make the request again with a fund name?";
+		const header = "Fact Sheet!";
+		return res.json({
+	        speech: speech,
+	        displayText: speech,
+	        source: header
+	    });		
+	}
 	
 	etf.postFactSheetRequest(function(data){
 		appLogger.info('Fact Sheet data',data);
@@ -116,6 +132,36 @@ API.prototype.handleFactSheetResponse = function(req, res){
 	        source: header
 	    });
 	},fundName);
+}
+
+
+
+API.prototype.handleETFFundResponse = function(req, res){
+	
+	const requestParams = req.body.result && req.body.result.parameters ? req.body.result.parameters : {};
+	const fundName = requestParams.fundName ? requestParams.fundName : undefined;
+	const fundAttribute = requestParams.fundAttribute ? requestParams.fundAttribute : undefined;
+	
+	console.log("fundName ",fundName);
+	console.log("fundAttribute ",fundAttribute);
+	
+	let speech,header;
+	
+	 if(fundAttribute){
+         console.log("Fund Attribute Info ",etffunds[etfFund][fundDetailAttr]);
+         speech = etffunds[etfFund][fundDetailAttr];
+         header = "ETF - Fund Attribute";
+     }else{
+        const fundInfo = etffunds[etfFund].fundInfo;
+        speech = fundInfo + ". Do you want to hear more details about "+etfFund+" fund?"    
+        header = "ETF - Fund Info";
+     }	
+	
+	return res.json({
+        speech: speech,
+        displayText: speech,
+        source: header
+    });
 }
 
 
