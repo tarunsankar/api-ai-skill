@@ -136,7 +136,7 @@ const ETF = function () {};
 ETF.prototype.getWMRDataFromURL = function(callback){
 	const newsURL = "https://wmr.jhinvestments.com/content/jhi-market-recap/en_US/jcr:content/marketNews/news1.json";
 	request.get(newsURL, function(error, response, body) {
-		const jsonData = {};
+		let jsonData = {};
 		try{
 			appLogger.info('getWMRDataFromURL response body',body);
 			// to validate the response data
@@ -161,7 +161,7 @@ ETF.prototype.postFactSheetRequest = function(callback,fundName){
     	const newsURL = "https://etf-stg.jhinvestments.com/bin/JHINV/etf/pipServlet";
     	const formData = {fname:'Sankar',lname:'Anbazhagan',email:'sanbazhagan@jhancock.com',filepath:docPath,emaillink:'Y'};
     	request.post({url: newsURL, form: formData}, function(error, response, body) {
-    		var jsonData = {};
+    		let jsonData = {};
     		try{
     			appLogger.info('postFactSheetRequest response body',body);
     			// to validate the response data
@@ -217,9 +217,9 @@ ETF.prototype.init = function(etfObj){
 
 ETF.prototype.updateFundData = function(etfObj,data){
    	// get as of data
-	var asOfDate = etfObj.getDateWithoutTimeStamp(data['pricing'].asOfDate);
+	const asOfDate = etfObj.getDateWithoutTimeStamp(data['pricing'].asOfDate);
 	// get inception date
-	var inceptionDate = etfObj.getDateWithoutTimeStamp(data['profile'].inceptionDate);
+	const inceptionDate = etfObj.getDateWithoutTimeStamp(data['profile'].inceptionDate);
 	
 	// get fund name
 	let etfFund;
@@ -264,7 +264,7 @@ ETF.prototype.updateFundData = function(etfObj,data){
 		// bid/ask midpoint
 		etffunds[etfFund].bid_midpoint = etffunds[etfFund].ask_midpoint = "As of date "+asOfDate+", the bid or ask mid point is "+data['pricing'].bidAskMidpoint+" percentage";
 		// get statistics as of data
-		var statisticsAsOfDate = etfObj.getDateWithoutTimeStamp(data['statistics'].asOfDate);    	    	
+		const statisticsAsOfDate = etfObj.getDateWithoutTimeStamp(data['statistics'].asOfDate);    	    	
 		// set P/B ratio 
 		etffunds[etfFund].pb_ratio = "As of date "+statisticsAsOfDate+", the price-to-book ratio is "+data['statistics'].pbRatio;
 		// set P/E ratio
@@ -272,15 +272,15 @@ ETF.prototype.updateFundData = function(etfObj,data){
 		// market cap
 		etffunds[etfFund].average_market_cap = etffunds[etfFund].market_cap = "As of date "+statisticsAsOfDate+", the Weighted average market cap is "+data['statistics'].weightedCap;
 		// get holdings as of data
-		var holdingsAsOfDate = etfObj.getDateWithoutTimeStamp(data['holdings'].asOfDate);    	    	
+		const holdingsAsOfDate = etfObj.getDateWithoutTimeStamp(data['holdings'].asOfDate);    	    	
 		// set Sectors
-		var sectors = [];
+		let sectors = [];
 		_und.each(data['holdings'].topTenSectors, function(sectorObj){
 			sectors.push(sectorObj.sectorName);
 		});
 		etffunds[etfFund].top_sectors = etffunds[etfFund].sectors = "As of date "+holdingsAsOfDate+", the top 5 sectors are "+sectors.slice(0,5).join(",");
 		// set Holdings
-		var holdings = [];
+		let holdings = [];
 		_und.each(data['holdings'].topTenHoldings, function(holdingObj){
 			holdings.push(holdingObj.holdingName);
 		});
@@ -294,7 +294,7 @@ ETF.prototype.capitalizeFirst = function(s) {
 
 ETF.prototype.roundFundValues = function(n) {
 	// convert number to string
-	var s = n+"";
+	const s = n+"";
     return Math.floor(s.substring(0,2) + (s.slice(2)).replace(/[0-9]/g, 0));
 }
 
