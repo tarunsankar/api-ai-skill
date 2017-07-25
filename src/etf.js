@@ -186,7 +186,7 @@ ETF.prototype.getFundDetailDataFromObject = function(fundName, fundAttribute) {
 	let speech,header;
 	
 	 if(fundAttribute){
-        speech = etffunds[fundName][fundDetailAttr];
+        speech = etffunds[fundName][fundAttribute];
         header = "ETF - Fund Attribute";
     }else{
        speech = etffunds[fundName].fundInfo;    
