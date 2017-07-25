@@ -140,10 +140,12 @@ API.prototype.handleETFFundResponse = function(req, res){
 	
 	const requestParams = req.body.result && req.body.result.parameters ? req.body.result.parameters : {};
 	const fundName = requestParams.fundName ? requestParams.fundName.toLowerCase() : undefined;
-	const fundAttribute = requestParams.fundAttribute ? requestParams.fundAttribute.toLowerCase() : undefined;
+	const fundAttribute = requestParams.fundAttribute ? requestParams.fundAttribute.toLowerCase().split(" ").join("_") : undefined;
 	
 	appLogger.info("fundName ",fundName);
 	appLogger.info("fundAttribute ",fundAttribute);
+	
+	appLogger.info("Fund object",etf.etffunds);
 	
 	let speech,header;
 	
