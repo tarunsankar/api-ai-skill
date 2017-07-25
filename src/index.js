@@ -145,25 +145,9 @@ API.prototype.handleETFFundResponse = function(req, res){
 	appLogger.info("fundName ",fundName);
 	appLogger.info("fundAttribute ",fundAttribute);
 	
-	appLogger.info("Fund object",etf.etffunds);
+	res.json(etf.getFundDetailDataFromObject(fundName,fundAttribute));
 	
-	let speech,header;
-	
-	 if(fundAttribute){
-         appLogger.info("Fund Attribute Info ",etffunds[fundName][fundDetailAttr]);
-         speech = etf.etffunds[fundName][fundDetailAttr];
-         header = "ETF - Fund Attribute";
-     }else{
-        const fundInfo = etf.etffunds[fundName].fundInfo;
-        speech = fundInfo + ". Do you want to hear more details about "+fundName+" fund?"    
-        header = "ETF - Fund Info";
-     }	
-	
-	return res.json({
-        speech: speech,
-        displayText: speech,
-        source: header
-    });
+
 }
 
 

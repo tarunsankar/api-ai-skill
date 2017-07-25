@@ -178,6 +178,29 @@ ETF.prototype.postFactSheetRequest = function(callback,fundName){
 }
 
 
+ETF.prototype.getFundDetailDataFromObject = function(fundName, fundAttribute) {
+	
+	appLogger.info("fundName ",fundName);
+	appLogger.info("fundAttribute ",fundAttribute);
+	
+	let speech,header;
+	
+	 if(fundAttribute){
+        speech = etffunds[fundName][fundDetailAttr];
+        header = "ETF - Fund Attribute";
+    }else{
+       speech = etffunds[fundName].fundInfo;    
+       header = "ETF - Fund Info";
+    }	
+	
+	return {
+       speech: speech,
+       displayText: speech,
+       source: header
+   };
+}
+
+
 ETF.prototype.getFundDetailDataFromAPI = function(url) {
     return new Promise(function(resolve, reject) {
         request(url, function(err, res, body) {
